@@ -3,7 +3,7 @@ body {
   padding: 0;
   min-height: 100vh;
 
-  background-image: url("college.jpg"); /* image name */
+  background-image: url("bg.jpg"); /* image name */
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -179,4 +179,5 @@ body {
   z-index: 9998;
   border: 1px solid rgba(255,255,255,0.3);
 }
+
 
