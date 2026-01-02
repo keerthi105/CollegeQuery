@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin - Syllabus Upload</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial;
+      background: #0d1117;
+      color: white;
+      padding: 20px;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 6px;
+      border: none;
+    }
+    button {
+      background: #00ffcc;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .item {
+      background: #161b22;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>📄 Admin Panel - Upload Syllabus</h2>
+
+  <input type="text" id="courseName" placeholder="Course Name (BCA 1st Year)">
+  <input type="file" id="pdfFile" accept="application/pdf">
+
+  <button onclick="uploadPDF()">Upload PDF</button>
+
+  <div id="pdfList"></div>
+
+  <script>
+    function uploadPDF() {
+      let course = document.getElementById("courseName").value;
+      let file = document.getElementById("pdfFile").files[0];
+
+      if (!course || !file) {
+        alert("Please enter course and select a PDF.");
+        return;
+      }
+
+      let reader = new FileReader();
+      reader.onload = function () {
+        let pdfData = JSON.parse(localStorage.getItem("syllabusData")) || [];
+
+        pdfData.push({
+          course: course,
+          pdf: reader.result
+        });
+
+        localStorage.setItem("syllabusData", JSON.stringify(pdfData));
+
+        document.getElementById("courseName").value = "";
+        document.getElementById("pdfFile").value = "";
+
+        showPDFs();
+        alert("✅ Syllabus Uploaded Successfully!");
+      };
+
+      reader.readAsDataURL(file);
+    }
+
+    function showPDFs() {
+      let data = JSON.parse(localStorage.getItem("syllabusData")) || [];
+      let html = "";
+
+      data.forEach((d, i) => {
+        html += `
+          <div class="item">
+            ✅ ${d.course}<br>
+            <button onclick="viewPDF(${i})">View PDF</button>
+          </div>
+        `;
+      });
+
+      document.getElementById("pdfList").innerHTML = html;
+    }
+
+    function viewPDF(index) {
+      let data = JSON.parse(localStorage.getItem("syllabusData"));
+      window.open(data[index].pdf, "_blank");
+    }
+
+    showPDFs();
+  </script>
+
+</body>
+</html>

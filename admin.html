@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bha-AI Admin Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: white;
+            padding: 15px;
+            margin: 0;
+        }
+
+        .admin-box {
+            max-width: 500px;
+            margin: auto;
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 6px;
+            border: none;
+            font-size: 16px;
+        }
+
+        button {
+            background: #22c55e;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .update-btn {
+            background: #38bdf8;
+        }
+
+        .list {
+            margin-top: 20px;
+        }
+
+        .item {
+            background: #334155;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 8px;
+        }
+
+        .delete-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        .edit-btn {
+            background: #facc15;
+            color: black;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="admin-box">
+        <h2>🤖 bhA-Ai Admin Panel</h2>
+
+        <input type="text" id="title" placeholder="Enter Title (Example: History)">
+        <input type="text" id="url" placeholder="Paste College Website URL">
+
+        <button id="addBtn" onclick="addAbout()">Add About Info</button>
+        <button id="updateBtn" class="update-btn" onclick="updateAbout()" style="display:none;">Update Info</button>
+
+        <div class="list" id="aboutList"></div>
+    </div>
+
+<script>
+    let editIndex = null;
+
+    function getData() {
+        return JSON.parse(localStorage.getItem("aboutData")) || [];
+    }
+
+    function saveData(data) {
+        localStorage.setItem("aboutData", JSON.stringify(data));
+    }
+
+    function addAbout() {
+        const title = document.getElementById("title").value.trim();
+        const url = document.getElementById("url").value.trim();
+
+        if (title === "" || url === "") {
+            alert("Please fill both fields");
+            return;
+        }
+
+        const data = getData();
+        data.push({ title, url });
+        saveData(data);
+
+        document.getElementById("title").value = "";
+        document.getElementById("url").value = "";
+
+        displayData();
+    }
+
+    function editAbout(index) {
+        const data = getData();
+        document.getElementById("title").value = data[index].title;
+        document.getElementById("url").value = data[index].url;
+
+        editIndex = index;
+
+        document.getElementById("addBtn").style.display = "none";
+        document.getElementById("updateBtn").style.display = "block";
+    }
+
+    function updateAbout() {
+        const title = document.getElementById("title").value.trim();
+        const url = document.getElementById("url").value.trim();
+
+        const data = getData();
+        data[editIndex] = { title, url };
+        saveData(data);
+
+        document.getElementById("title").value = "";
+        document.getElementById("url").value = "";
+
+        document.getElementById("addBtn").style.display = "block";
+        document.getElementById("updateBtn").style.display = "none";
+
+        displayData();
+    }
+
+    function deleteAbout(index) {
+        const data = getData();
+        data.splice(index, 1);
+        saveData(data);
+        displayData();
+    }
+
+    function displayData() {
+        const data = getData();
+        const list = document.getElementById("aboutList");
+        list.innerHTML = "";
+
+        data.forEach((item, index) => {
+            list.innerHTML += `
+                <div class="item">
+                    <b>${item.title}</b><br>
+                    <a href="${item.url}" target="_blank" style="color:#38bdf8">${item.url}</a>
+
+                    <button class="edit-btn" onclick="editAbout(${index})">Edit</button>
+                    <button class="delete-btn" onclick="deleteAbout(${index})">Delete</button>
+                </div>
+            `;
+        });
+    }
+
+    displayData();
+</script>
+
+</body>
+</html>
