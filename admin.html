@@ -84,6 +84,22 @@
         <div class="list" id="aboutList"></div>
     </div>
 
+    <!-- 🔹 Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+   <!-- 🔹 Firebase Initialization -->
+  <script>
+    const firebaseConfig = {
+       apiKey: "AIzaSyCYJY8PoJSoH_xiyrRHATjj-43j0Q9CrRQ",
+  authDomain: "bha-ai-admin.firebaseapp.com",
+  projectId: "bha-ai-admin"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+  </script>
+
 <script>
     let editIndex = null;
 
@@ -96,23 +112,40 @@
     }
 
     function addAbout() {
-        const title = document.getElementById("title").value.trim();
-        const url = document.getElementById("url").value.trim();
+  const title = document.getElementById("title").value.trim();
+  const url = document.getElementById("url").value.trim();
 
-        if (title === "" || url === "") {
-            alert("Please fill both fields");
-            return;
-        }
+  if (!title || !url) {
+    alert("Fill all fields");
+    return;
+  }
 
-        const data = getData();
-        data.push({ title, url });
-        saveData(data);
+  db.collection("about").add({
+    title: title,
+    url: url
+  }).then(() => {
+    document.getElementById("title").value = "";
+    document.getElementById("url").value = "";
+  });
+}
+db.collection("about").onSnapshot(snapshot => {
+  const list = document.getElementById("aboutList");
+  list.innerHTML = "";
 
-        document.getElementById("title").value = "";
-        document.getElementById("url").value = "";
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    list.innerHTML += `
+      <div class="item">
+        <b>${data.title}</b><br>
+        <a href="${data.url}" target="_blank" style="color:#38bdf8">${data.url}</a>
+      </div>
+    `;
+  });
+});
+function deleteAbout(id) {
+  db.collection("about").doc(id).delete();
+}
 
-        displayData();
-    }
 
     function editAbout(index) {
         const data = getData();
