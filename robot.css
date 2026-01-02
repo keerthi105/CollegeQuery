@@ -1,3 +1,26 @@
+body {
+  margin: 0;
+  padding: 0;
+
+  /* Background image */
+  background-image: url("bg.jpg");
+  background-size: cover;        /* Full screen */
+  background-position: center;   /* Center image */
+  background-repeat: no-repeat;
+  background-attachment: fixed;  /* Nice effect */
+
+  font-family: Arial, sans-serif;
+}
+
+.title {
+  text-align: center;
+  color: white;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 15px;
+  margin: 0;
+}
+
+
 /* === ROBOT CONTAINER === */
 .robot-launcher {
   position: fixed;
