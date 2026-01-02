@@ -11,6 +11,12 @@ body {
   /* Mobile fix */
   background-attachment: scroll;
 }
+.page {
+  min-height: 100vh;
+  background-image: url("college.jpg");
+  background-size: cover;
+  background-position: center;
+}
 
 .title {
   text-align: center;
@@ -179,5 +185,6 @@ body {
   z-index: 9998;
   border: 1px solid rgba(255,255,255,0.3);
 }
+
 
 
