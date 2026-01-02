@@ -128,20 +128,24 @@
     document.getElementById("url").value = "";
   });
 }
-db.collection("about").onSnapshot(snapshot => {
+function displayData() {
   const list = document.getElementById("aboutList");
   list.innerHTML = "";
 
-  snapshot.forEach(doc => {
-    const data = doc.data();
-    list.innerHTML += `
-      <div class="item">
-        <b>${data.title}</b><br>
-        <a href="${data.url}" target="_blank" style="color:#38bdf8">${data.url}</a>
-      </div>
-    `;
+  db.collection("about").get().then(snapshot => {
+    snapshot.forEach(doc => {
+      const data = doc.data();
+
+      list.innerHTML += `
+        <div class="item">
+          <b>${data.title}</b><br>
+          <a href="${data.url}" target="_blank">${data.url}</a>
+        </div>
+      `;
+    });
   });
-});
+}
+
 function deleteAbout(id) {
   db.collection("about").doc(id).delete();
 }
