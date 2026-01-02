@@ -1,15 +1,15 @@
 body {
   margin: 0;
   padding: 0;
+  min-height: 100vh;
 
-  /* Background image */
-  background-image: url("bg.jpg");
-  background-size: cover;        /* Full screen */
-  background-position: center;   /* Center image */
+  background-image: url("college.jpg"); /* image name */
   background-repeat: no-repeat;
-  background-attachment: fixed;  /* Nice effect */
+  background-position: center center;
+  background-size: cover;
 
-  font-family: Arial, sans-serif;
+  /* Mobile fix */
+  background-attachment: scroll;
 }
 
 .title {
@@ -179,3 +179,4 @@ body {
   z-index: 9998;
   border: 1px solid rgba(255,255,255,0.3);
 }
+
