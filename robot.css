@@ -1,21 +1,15 @@
 body {
   margin: 0;
   padding: 0;
-  min-height: 100vh;
 
-  background-image: url("bg.jpg"); /* image name */
+  /* Background image */
+  background-image: url("bg.jpg");
+  background-size: cover;        /* Full screen */
+  background-position: center;   /* Center image */
   background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
+  background-attachment: fixed;  /* Nice effect */
 
-  /* Mobile fix */
-  background-attachment: scroll;
-}
-.page {
-  min-height: 100vh;
-  background-image: url("college.jpg");
-  background-size: cover;
-  background-position: center;
+  font-family: Arial, sans-serif;
 }
 
 .title {
@@ -32,7 +26,7 @@ body {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 120px;
+  width: 125px;
   height: 160px;
   cursor: pointer;
   z-index: 9999;
@@ -116,7 +110,7 @@ body {
 
 /* === BODY === */
 .robot-body {
-  width: 70px;
+  width: 80px;
   height: 60px;
   background: #e6e6e6;
   margin: auto;
@@ -171,20 +165,21 @@ body {
 /* === ROBOT GLASS CONTAINER === */
 .robot-container {
   position: fixed;
-  bottom: 12px;
-  right: 12px;
-  width: 160px;
+  bottom: 20px;
+  right: 20px;
+  width: 170px;
   height: 200px;
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(12px);
-  border-radius: 30px;
-  box-shadow: 0 0 30px rgba(0, 200, 255, 0.5);
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(15px);
+  border-radius: 35px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9998;
-  border: 1px solid rgba(255,255,255,0.3);
 }
-
-
-
+.robot-container,
+.robot-launcher,
+.chatbot-window {
+  z-index: 99999 !important;
+  position: fixed !important;
+}
