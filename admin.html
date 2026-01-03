@@ -1,143 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Bha-AI Admin Panel</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>BhA-AI Admin Panel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: white;
-      padding: 15px;
-      margin: 0;
-    }
+<style>
+body {
+  background:#0f172a;
+  color:white;
+  font-family:Arial, sans-serif;
+  margin:0;
+  padding:15px;
+}
 
-    .admin-box {
-      max-width: 500px;
-      margin: auto;
-      background: #1e293b;
-      padding: 20px;
-      border-radius: 12px;
-    }
+.admin-box {
+  max-width:550px;
+  margin:auto;
+  background:#1e293b;
+  padding:20px;
+  border-radius:12px;
+}
 
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+h2, h3 {
+  text-align:center;
+}
 
-    input, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      border-radius: 6px;
-      border: none;
-      font-size: 16px;
-    }
+input, button {
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  border-radius:6px;
+  border:none;
+  font-size:16px;
+}
 
-    button {
-      background: #22c55e;
-      color: black;
-      font-weight: bold;
-      cursor: pointer;
-    }
+button {
+  background:#22c55e;
+  font-weight:bold;
+  cursor:pointer;
+}
 
-    .item {
-      background: #334155;
-      padding: 10px;
-      border-radius: 6px;
-      margin-top: 10px;
-    }
+.section {
+  margin-top:30px;
+  padding-top:15px;
+  border-top:1px solid #334155;
+}
 
-    .delete-btn {
-      background: #ef4444;
-      color: white;
-      margin-top: 6px;
-    }
-  </style>
+.item {
+  background:#334155;
+  padding:10px;
+  margin-top:10px;
+  border-radius:6px;
+}
+
+.item a {
+  color:#38bdf8;
+  word-break:break-all;
+}
+
+.delete-btn {
+  background:#ef4444;
+  color:white;
+  margin-top:6px;
+}
+</style>
 </head>
+
 <body>
 
 <div class="admin-box">
-  <h2>🤖 Bha-AI Admin Panel</h2>
+  <h2>🤖 BhA-AI Admin Panel</h2>
 
-  <input type="text" id="title" placeholder="Enter Title (Example: History)">
-  <input type="text" id="url" placeholder="Paste College Website URL">
+  <!-- ================= ABOUT MODULE ================= -->
+  <div class="section">
+    <h3>🏫 About College</h3>
 
-  <button onclick="addAbout()">Add About Info</button>
+    <input id="aboutTitle" placeholder="Title (Eg: History)">
+    <input id="aboutUrl" placeholder="Website URL">
+    <button onclick="addAbout()">Add About Info</button>
 
-  <div id="aboutList"></div>
+    <div id="aboutList"></div>
+  </div>
+
+  <!-- ================= PROGRAMMES MODULE ================= -->
+  <div class="section">
+    <h3>🎓 Programmes</h3>
+
+    <input id="progName" placeholder="Programme Name (UG,PG,etc)">
+    <input id="progUrl" placeholder="Programme Page URL">
+    <button onclick="addProgram()">Add Programme</button>
+
+    <div id="programList"></div>
+  </div>
 </div>
 
-<!-- 🔥 Firebase SDKs -->
+<!-- 🔹 Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <script>
-  // 🔹 Firebase Config
-  const firebaseConfig = {
-    apiKey: "AIzaSyCYJY8PoJSoH_xiyrRHATjj-43j0Q9CrRQ",
-    authDomain: "bha-ai-admin.firebaseapp.com",
-    projectId: "bha-ai-admin"
-  };
+/* 🔹 Firebase Config */
+const firebaseConfig = {
+  apiKey: "AIzaSyCYJY8PoJSoH_xiyrRHATjj-43j0Q9CrRQ",
+  authDomain: "bha-ai-admin.firebaseapp.com",
+  projectId: "bha-ai-admin"
+};
 
-  // 🔹 Init Firebase
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
-  // 🔹 Add Data
-  function addAbout() {
-    const title = document.getElementById("title").value.trim();
-    const url = document.getElementById("url").value.trim();
+/* ================= ABOUT ================= */
 
-    if (!title || !url) {
-      alert("Please fill all fields");
-      return;
-    }
+function addAbout() {
+  const title = aboutTitle.value.trim();
+  const url = aboutUrl.value.trim();
 
-    db.collection("about").add({
-      title: title,
-      url: url,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(() => {
-      document.getElementById("title").value = "";
-      document.getElementById("url").value = "";
+  if (!title || !url) return alert("Fill all fields");
+
+  db.collection("about").add({ title, url }).then(() => {
+    aboutTitle.value = "";
+    aboutUrl.value = "";
+  });
+}
+
+function loadAbout() {
+  const list = document.getElementById("aboutList");
+
+  db.collection("about").onSnapshot(snapshot => {
+    list.innerHTML = "";
+    snapshot.forEach(doc => {
+      const d = doc.data();
+      list.innerHTML += `
+        <div class="item">
+          <b>${d.title}</b><br>
+          <a href="${d.url}" target="_blank">${d.url}</a>
+          <button class="delete-btn" onclick="deleteAbout('${doc.id}')">Delete</button>
+        </div>
+      `;
     });
-  }
+  });
+}
 
-  // 🔹 Real-time Display (AUTO updates)
-  function loadData() {
-    db.collection("about")
-      .orderBy("createdAt", "desc")
-      .onSnapshot(snapshot => {
-        const list = document.getElementById("aboutList");
-        list.innerHTML = "";
+function deleteAbout(id) {
+  db.collection("about").doc(id).delete();
+}
 
-        snapshot.forEach(doc => {
-          const data = doc.data();
-          list.innerHTML += `
-            <div class="item">
-              <b>${data.title}</b><br>
-              <a href="${data.url}" target="_blank" style="color:#38bdf8">
-                ${data.url}
-              </a>
-              <button class="delete-btn" onclick="deleteAbout('${doc.id}')">
-                Delete
-              </button>
-            </div>
-          `;
-        });
-      });
-  }
+/* ================= PROGRAMMES ================= */
 
-  // 🔹 Delete Data
-  function deleteAbout(id) {
-    db.collection("about").doc(id).delete();
-  }
+function addProgram() {
+  const name = progName.value.trim();
+  const url = progUrl.value.trim();
 
-  // 🔹 Load on page open
-  loadData();
+  if (!name || !url) return alert("Fill all fields");
+
+  db.collection("programs").add({ name, url }).then(() => {
+    progName.value = "";
+    progUrl.value = "";
+  });
+}
+
+function loadPrograms() {
+  const list = document.getElementById("programList");
+
+  db.collection("programs").onSnapshot(snapshot => {
+    list.innerHTML = "";
+    snapshot.forEach(doc => {
+      const p = doc.data();
+      list.innerHTML += `
+        <div class="item">
+          🎓 <b>${p.name}</b><br>
+          <a href="${p.url}" target="_blank">${p.url}</a>
+          <button class="delete-btn" onclick="deleteProgram('${doc.id}')">Delete</button>
+        </div>
+      `;
+    });
+  });
+}
+
+function deleteProgram(id) {
+  db.collection("programs").doc(id).delete();
+}
+
+/* 🔹 INITIAL LOAD */
+loadAbout();
+loadPrograms();
 </script>
 
 </body>
