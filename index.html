@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <head>
   <title>Bhavan's Robot Chatbot</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="robot.css">
 </head>
-
 <body>
-  <div class="page">
-    <h2 style="text-align:center;">Bhavan's College Website</h2>
-  </div>
 
-  <script src="robot.js"></script>
+<h2 class="title">Bhavan's College Website</h2>
+
+<!-- 🔹 Firebase SDKs (MUST BE BEFORE robot.js) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+
+
+<!-- 🔹 Robot JS (LAST) -->
+<script src="robot.js"></script>
+
 </body>
 </html>
-
-
